@@ -1,4 +1,56 @@
-public Man() { this.numIncorrect = 0; }
+import java.io.Console;
+import java.util.Scanner;
+
+// Man class inside the same file
+class Man {
+    public static final int MAX_INCORRECT = 6;
+    private int numIncorrect;
+    private static final String[] STAGES = {
+        "  +---+\n" +
+        "  |   |\n" +
+        "      |\n" +
+        "      |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        "      |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        "  |   |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|   |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|\\  |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|\\  |\n" +
+        " /    |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|\\  |\n" +
+        " / \\  |\n" +
+        "=========\n"
+    };
+
+    public Man() { this.numIncorrect = 0; }
     public void hang() { if (numIncorrect < MAX_INCORRECT) numIncorrect++; }
     public boolean isAlive() { return numIncorrect < MAX_INCORRECT; }
     public int getNumIncorrect() { return numIncorrect; }
