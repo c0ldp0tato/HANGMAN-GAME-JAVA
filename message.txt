@@ -104,7 +104,7 @@ public class Main {
             boolean hasUnderscore = false;
             for (char c : puzzle) if (c == '_') hasUnderscore = true;
             if (!hasUnderscore) {
-                System.out.println("🎉 Player 2 wins! The word was: " + new String(letters));
+                System.out.println("Player 2 wins! The word was: " + new String(letters));
                 return;
             }
 
@@ -115,7 +115,7 @@ public class Main {
 
             if (guessInput.length() > 1) {
                 if (guessInput.equalsIgnoreCase(new String(letters))) {
-                    System.out.println("🎉 Correct! The word was: " + new String(letters));
+                    System.out.println("Correct! The word was: " + new String(letters));
                     return;
                 } else {
                     System.out.println("Wrong word guess!");
@@ -145,6 +145,6 @@ public class Main {
 
         // loss
         System.out.println(m.toString());
-        System.out.println("💀 Game over! The word was: " + new String(letters));
+        System.out.println("Game over! The word was: " + new String(letters));
     }
 }
