@@ -1,0 +1,150 @@
+import java.io.Console;
+import java.util.Scanner;
+
+// Man class inside the same file
+class Man {
+    public static final int MAX_INCORRECT = 6;
+    private int numIncorrect;
+    private static final String[] STAGES = {
+        "  +---+\n" +
+        "  |   |\n" +
+        "      |\n" +
+        "      |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        "      |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        "  |   |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|   |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|\\  |\n" +
+        "      |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|\\  |\n" +
+        " /    |\n" +
+        "=========\n",
+        "  +---+\n" +
+        "  |   |\n" +
+        "  O   |\n" +
+        " /|\\  |\n" +
+        " / \\  |\n" +
+        "=========\n"
+    };
+
+    public Man() { this.numIncorrect = 0; }
+    public void hang() { if (numIncorrect < MAX_INCORRECT) numIncorrect++; }
+    public boolean isAlive() { return numIncorrect < MAX_INCORRECT; }
+    public int getNumIncorrect() { return numIncorrect; }
+    @Override public String toString() {
+        int idx = Math.min(numIncorrect, STAGES.length - 1);
+        return STAGES[idx];
+    }
+}
+
+// Main game class
+public class Main {
+    public static void main(String[] args) {
+        Console console = System.console();
+        char[] letters;
+
+        if (console != null) {
+            letters = console.readPassword("Player 1, please enter a secret word: ");
+        } else {
+            // Programiz usually doesn’t support Console
+            Scanner tempScanner = new Scanner(System.in);
+            System.out.print("Player 1, please enter a secret word: ");
+            String input = tempScanner.nextLine();
+            letters = input.toCharArray();
+        }
+
+        // normalize to uppercase
+        for (int i = 0; i < letters.length; i++) {
+            letters[i] = Character.toUpperCase(letters[i]);
+        }
+
+        // build puzzle
+        char[] puzzle = new char[letters.length];
+        for (int i = 0; i < letters.length; i++) {
+            if (Character.isLetter(letters[i])) puzzle[i] = '_';
+            else puzzle[i] = letters[i];
+        }
+
+        Man m = new Man();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nWelcome to Hangman!\n");
+
+        while (m.isAlive()) {
+            // print hangman + puzzle
+            System.out.println(m.toString());
+            System.out.print("Word: ");
+            for (char c : puzzle) System.out.print(c + " ");
+            System.out.println("\n");
+
+            // win check
+            boolean hasUnderscore = false;
+            for (char c : puzzle) if (c == '_') hasUnderscore = true;
+            if (!hasUnderscore) {
+                System.out.println("Player 2 wins! The word was: " + new String(letters));
+                return;
+            }
+
+            // guess input
+            System.out.print("Enter a letter (or type a full word guess): ");
+            String guessInput = scanner.nextLine().trim();
+            if (guessInput.isEmpty()) continue;
+
+            if (guessInput.length() > 1) {
+                if (guessInput.equalsIgnoreCase(new String(letters))) {
+                    System.out.println("Correct! The word was: " + new String(letters));
+                    return;
+                } else {
+                    System.out.println("Wrong word guess!");
+                    m.hang();
+                    continue;
+                }
+            }
+
+            char guess = Character.toUpperCase(guessInput.charAt(0));
+            boolean found = false;
+            for (int i = 0; i < letters.length; i++) {
+                if (letters[i] == guess) {
+                    puzzle[i] = guess;
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Nope! That letter isn't in the word.");
+                m.hang();
+            } else {
+                System.out.println("Nice! That letter is in the word.");
+            }
+
+            System.out.println();
+        }
+
+        // loss
+        System.out.println(m.toString());
+        System.out.println("Game over! The word was: " + new String(letters));
+    }
+}
